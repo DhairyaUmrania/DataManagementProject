@@ -1,0 +1,78 @@
+erDiagram
+    customers ||--o{ customer_accounts : has
+    customers ||--o{ customer_orders : places
+    customer_accounts ||--o{ customer_orders : funds
+    customer_orders ||--o{ order_items : contains
+    items ||--o{ class : categorized_as
+    items ||--o{ order_items : included_in
+    items ||--o{ supplier_items : supplied_as
+    class ||--o{ order_items : classifies
+    class ||--o{ supplier_items : categorizes
+    suppliers ||--o{ order_items : provides
+    suppliers ||--o{ supplier_items : offers
+    supplier_items ||--o{ preference_index : has
+
+    customers {
+        int customer_id PK
+        varchar user_id
+        varchar password
+    }
+    
+    customer_accounts {
+        int customer_account_id PK
+        varchar bank_account_number
+        varchar bank_name
+        int customer_id FK
+    }
+    
+    customer_orders {
+        int customer_order_id PK
+        int customer_id FK
+        decimal total_price
+        int customer_account_id FK
+    }
+    
+    items {
+        int item_id PK
+        varchar name
+    }
+    
+    class {
+        int class_id PK
+        int item_id FK
+        decimal max_price
+        enum class_type
+    }
+    
+    suppliers {
+        int supplier_id PK
+        varchar name
+    }
+    
+    order_items {
+        int order_item_id PK
+        int customer_order_id FK
+        int quantity
+        decimal price
+        int supplier_id FK
+        int class_id FK
+        int item_id FK
+    }
+    
+    supplier_items {
+        int supplier_item_id PK
+        int supplier_id FK
+        int commission
+        int class_id FK
+        int discount
+        int stock
+        decimal review
+        int number_reviews
+        int item_id FK
+    }
+    
+    preference_index {
+        int preference_index_id PK
+        int supplier_item_id FK
+        decimal index_val
+    }
